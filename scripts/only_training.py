@@ -52,7 +52,7 @@ with torch.cuda.stream(training_loop_stream):
     MODEL_NAME = sys.argv[1]#"bert-base-uncased"
 
     tokenizer = AutoTokenizer.from_pretrained(f"{MODEL_NAME}/tokenizer")
-    MAX_LEN=256
+    MAX_LEN=128 if 'base' in MODEL_NAME else 256
 
     class CustomDataset(torch.utils.data.Dataset):
         def __init__(self, df, tokenizer):
@@ -105,7 +105,7 @@ with torch.cuda.stream(training_loop_stream):
 
     batch_size = 60
     metric_name = "f1_macro"
-    num_train_epochs = 20
+    num_train_epochs = 15 if 'base' in MODEL_NAME else 10
 
     args = TrainingArguments(
         output_dir = f"{MODEL_NAME}",
